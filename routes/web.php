@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\RoleController;
 
 Route::inertia('/', 'welcome')->name('home');
 
@@ -10,7 +11,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard
     Route::inertia('dashboard', 'dashboard')
         ->name('dashboard');
-
 
     // Category
     Route::middleware('permission:view category')
@@ -22,7 +22,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             )->name('categories.index');
         });
 
-
     // Product
     Route::middleware('permission:view product')
         ->group(function () {
@@ -32,7 +31,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Inertia::render('product/index')
             )->name('products.index');
         });
-
 
     // Transaction
     Route::middleware('permission:view transaction')
@@ -44,7 +42,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             )->name('transactions.index');
         });
 
-
     // User Management
     Route::middleware('permission:view user')
         ->group(function () {
@@ -55,16 +52,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             )->name('users.index');
         });
 
-
     // Role Management
-    Route::middleware('permission:view role')
-        ->group(function () {
-            Route::get(
-                '/roles',
-                fn() =>
-                Inertia::render('role/index')
-            )->name('roles.index');
-        });
+    Route::resource('roles', RoleController::class)->except(['show']);
 });
 
 require __DIR__ . '/settings.php';
