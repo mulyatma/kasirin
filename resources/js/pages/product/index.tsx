@@ -1,4 +1,4 @@
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader } from '@/components/ui/card';
@@ -25,6 +25,12 @@ import DataTableToolbar from '@/components/data-table/toolbar';
 import { useEffect, useState, ReactNode } from 'react';
 
 export default function Index({ products, filters }: any) {
+    const { auth } = usePage<any>().props;
+    const permissions: string[] = auth?.permissions ?? [];
+    const canCreate = permissions.includes('create product');
+    const canEdit = permissions.includes('update product');
+    const canDelete = permissions.includes('delete product');
+    const hasActions = canEdit || canDelete;
     const [search, setSearch] = useState(filters?.search ?? '');
     const [productToDelete, setProductToDelete] = useState<any>(null);
     const [deleting, setDeleting] = useState(false);
@@ -52,12 +58,14 @@ export default function Index({ products, filters }: any) {
             <Card className="m-6">
                 <CardHeader className="flex flex-row items-center justify-between">
                     <PageHeader title="Produk" description="Kelola produk Anda." />
-                    <Button asChild>
-                        <Link href="/products/create">
-                            <Plus className="mr-2 h-4 w-4" />
-                            Tambah Produk
-                        </Link>
-                    </Button>
+                    {canCreate && (
+                        <Button asChild>
+                            <Link href="/products/create">
+                                <Plus className="mr-2 h-4 w-4" />
+                                Tambah Produk
+                            </Link>
+                        </Button>
+                    )}
                 </CardHeader>
                 <DataTable>
                     <DataTableToolbar
@@ -81,7 +89,7 @@ export default function Index({ products, filters }: any) {
                                 <TableHead>Harga</TableHead>
                                 <TableHead>Kategori</TableHead>
                                 <TableHead>Dibuat Pada</TableHead>
-                                <TableHead className="w-[70px]">Aksi</TableHead>
+                                {hasActions && <TableHead className="w-[70px]">Aksi</TableHead>}
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -95,33 +103,39 @@ export default function Index({ products, filters }: any) {
                                         <TableCell>{product.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}</TableCell>
                                         <TableCell>{product.category?.name ?? '-'}</TableCell>
                                         <TableCell>{new Date(product.created_at).toLocaleDateString()}</TableCell>
-                                        <TableCell>
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger asChild>
-                                                    <Button variant="ghost" size="icon">
-                                                        <MoreHorizontal className="h-4 w-4" />
-                                                    </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end">
-                                                    <DropdownMenuItem asChild>
-                                                        <Link href={`/products/${product.id}/edit`}>
-                                                            <Pencil className="mr-2 h-4 w-4" />
-                                                            Edit
-                                                        </Link>
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem
-                                                        className="text-red-600 focus:text-red-600"
-                                                        onSelect={(e) => {
-                                                            e.preventDefault();
-                                                            setProductToDelete(product);
-                                                        }}
-                                                    >
-                                                        <Trash2 className="mr-2 h-4 w-4" />
-                                                        Hapus
-                                                    </DropdownMenuItem>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
-                                        </TableCell>
+                                        {hasActions && (
+                                            <TableCell>
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger asChild>
+                                                        <Button variant="ghost" size="icon">
+                                                            <MoreHorizontal className="h-4 w-4" />
+                                                        </Button>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent align="end">
+                                                        {canEdit && (
+                                                            <DropdownMenuItem asChild>
+                                                                <Link href={`/products/${product.id}/edit`}>
+                                                                    <Pencil className="mr-2 h-4 w-4" />
+                                                                    Edit
+                                                                </Link>
+                                                            </DropdownMenuItem>
+                                                        )}
+                                                        {canDelete && (
+                                                            <DropdownMenuItem
+                                                                className="text-red-600 focus:text-red-600"
+                                                                onSelect={(e) => {
+                                                                    e.preventDefault();
+                                                                    setProductToDelete(product);
+                                                                }}
+                                                            >
+                                                                <Trash2 className="mr-2 h-4 w-4" />
+                                                                Hapus
+                                                            </DropdownMenuItem>
+                                                        )}
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
+                                            </TableCell>
+                                        )}
                                     </TableRow>
                                 ))
                             ) : (

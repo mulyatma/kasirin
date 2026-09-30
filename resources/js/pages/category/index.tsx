@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -41,6 +41,12 @@ interface Props {
 }
 
 export default function Index({ categories, filters }: Props) {
+    const { auth } = usePage<any>().props;
+    const permissions: string[] = auth?.permissions ?? [];
+    const canCreate = permissions.includes('create category');
+    const canEdit = permissions.includes('update category');
+    const canDelete = permissions.includes('delete category');
+    const hasActions = canEdit || canDelete;
     const [search, setSearch] = useState(filters?.search ?? '');
     const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(null);
     const [deleting, setDeleting] = useState(false);
@@ -84,12 +90,14 @@ export default function Index({ categories, filters }: Props) {
                         description="Kelola kategori untuk produk-produk Anda."
                     />
 
-                    <Button asChild>
-                        <Link href="/categories/create">
-                            <Plus className="mr-2 h-4 w-4" />
-                            Tambah Kategori
-                        </Link>
-                    </Button>
+                    {canCreate && (
+                        <Button asChild>
+                            <Link href="/categories/create">
+                                <Plus className="mr-2 h-4 w-4" />
+                                Tambah Kategori
+                            </Link>
+                        </Button>
+                    )}
                 </CardHeader>
 
                 <DataTable>
@@ -113,7 +121,7 @@ export default function Index({ categories, filters }: Props) {
                                 <TableHead>Nama Kategori</TableHead>
                                 <TableHead>Deskripsi</TableHead>
                                 <TableHead>Dibuat Pada</TableHead>
-                                <TableHead className="w-[70px]">Aksi</TableHead>
+                                {hasActions && <TableHead className="w-[70px]">Aksi</TableHead>}
                             </TableRow>
                         </TableHeader>
 
@@ -130,33 +138,39 @@ export default function Index({ categories, filters }: Props) {
                                         <TableCell>
                                             {new Date(category.created_at).toLocaleDateString()}
                                         </TableCell>
-                                        <TableCell>
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger asChild>
-                                                    <Button variant="ghost" size="icon">
-                                                        <MoreHorizontal className="h-4 w-4" />
-                                                    </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end">
-                                                    <DropdownMenuItem asChild>
-                                                        <Link href={`/categories/${category.id}/edit`}>
-                                                            <Pencil className="mr-2 h-4 w-4" />
-                                                            Edit
-                                                        </Link>
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem
-                                                        className="text-red-600 focus:text-red-600"
-                                                        onSelect={(e) => {
-                                                            e.preventDefault();
-                                                            setCategoryToDelete(category);
-                                                        }}
-                                                    >
-                                                        <Trash2 className="mr-2 h-4 w-4" />
-                                                        Hapus
-                                                    </DropdownMenuItem>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
-                                        </TableCell>
+                                        {hasActions && (
+                                            <TableCell>
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger asChild>
+                                                        <Button variant="ghost" size="icon">
+                                                            <MoreHorizontal className="h-4 w-4" />
+                                                        </Button>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent align="end">
+                                                        {canEdit && (
+                                                            <DropdownMenuItem asChild>
+                                                                <Link href={`/categories/${category.id}/edit`}>
+                                                                    <Pencil className="mr-2 h-4 w-4" />
+                                                                    Edit
+                                                                </Link>
+                                                            </DropdownMenuItem>
+                                                        )}
+                                                        {canDelete && (
+                                                            <DropdownMenuItem
+                                                                className="text-red-600 focus:text-red-600"
+                                                                onSelect={(e) => {
+                                                                    e.preventDefault();
+                                                                    setCategoryToDelete(category);
+                                                                }}
+                                                            >
+                                                                <Trash2 className="mr-2 h-4 w-4" />
+                                                                Hapus
+                                                            </DropdownMenuItem>
+                                                        )}
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
+                                            </TableCell>
+                                        )}
                                     </TableRow>
                                 ))
                             ) : (
