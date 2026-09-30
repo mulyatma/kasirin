@@ -14,11 +14,13 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $owner = User::create([
-            'name' => 'Owner',
-            'email' => 'owner@example.com',
-            'password' => bcrypt('password'),
-        ]);
+        $owner = User::firstOrCreate(
+            ['email' => 'owner@example.com'],
+            [
+                'name' => 'Owner',
+                'password' => bcrypt('password'),
+            ]
+        );
 
         $owner->assignRole('Owner');
     }
