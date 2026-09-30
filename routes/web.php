@@ -5,6 +5,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 
 Route::inertia('/', 'welcome')->name('home');
 
@@ -18,14 +19,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('categories', CategoryController::class)->except(['show']);
 
     // Product
-    Route::middleware('permission:view product')
-        ->group(function () {
-            Route::get(
-                '/products',
-                fn() =>
-                Inertia::render('product/index')
-            )->name('products.index');
-        });
+    Route::resource('products', ProductController::class)->except(['show']);
 
     // Transaction
     Route::middleware('permission:view transaction')
