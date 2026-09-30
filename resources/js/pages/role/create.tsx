@@ -1,7 +1,7 @@
-import AppLayout from '@/layouts/app-layout';
 import { Head } from '@inertiajs/react';
+import type { ReactNode } from 'react';
+import AppLayout from '@/layouts/app-layout';
 import RoleForm from './role-form';
-import { ReactNode } from 'react';
 
 interface Permission {
     id: number;

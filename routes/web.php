@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 
 Route::inertia('/', 'welcome')->name('home');
 
@@ -43,14 +44,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
 
     // User Management
-    Route::middleware('permission:view user')
-        ->group(function () {
-            Route::get(
-                '/users',
-                fn() =>
-                Inertia::render('user/index')
-            )->name('users.index');
-        });
+    Route::resource('users', UserController::class)->except(['show']);
 
     // Role Management
     Route::resource('roles', RoleController::class)->except(['show']);
