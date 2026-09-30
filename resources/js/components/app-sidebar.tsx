@@ -13,9 +13,9 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { usePermission } from '@/lib/permission';
 import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
-import { usePermission } from '@/lib/permission';
 
 const footerNavItems: NavItem[] = [
     {

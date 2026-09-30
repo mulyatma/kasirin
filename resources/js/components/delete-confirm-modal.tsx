@@ -1,6 +1,6 @@
+import { AlertTriangle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { AlertTriangle } from 'lucide-react';
 
 interface DeleteConfirmModalProps {
     open: boolean;
@@ -19,7 +19,9 @@ export default function DeleteConfirmModal({
     onCancel,
     processing = false,
 }: DeleteConfirmModalProps) {
-    if (!open) return null;
+    if (!open) {
+return null;
+}
 
     return (
         <div

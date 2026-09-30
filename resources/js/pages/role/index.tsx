@@ -1,15 +1,20 @@
-import AppLayout from '@/layouts/app-layout';
 import { Head, Link, router } from '@inertiajs/react';
+import { MoreHorizontal, Plus, Search, Pencil, Trash2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import DataTable from '@/components/data-table';
+import DataTableToolbar from '@/components/data-table/toolbar';
+import DeleteConfirmModal from '@/components/delete-confirm-modal';
+import PageHeader from '@/components/page-header';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import {
     Table,
     TableBody,
@@ -18,12 +23,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import DeleteConfirmModal from '@/components/delete-confirm-modal';
-import { MoreHorizontal, Plus, Search, Pencil, Trash2 } from 'lucide-react';
-import PageHeader from '@/components/page-header';
-import DataTable from '@/components/data-table';
-import DataTableToolbar from '@/components/data-table/toolbar';
-import { useEffect, useState } from 'react';
+import AppLayout from '@/layouts/app-layout';
 
 interface Role {
     id: number;
@@ -48,7 +48,10 @@ export default function Index({ roles, filters }: Props) {
 
 
     const handleDelete = () => {
-        if (!roleToDelete) return;
+        if (!roleToDelete) {
+return;
+}
+
         setDeleting(true);
 
         router.delete(`/roles/${roleToDelete.id}`, {
@@ -72,7 +75,7 @@ export default function Index({ roles, filters }: Props) {
         }, 300); // debounce 300ms
 
         return () => clearTimeout(timeout);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+         
     }, [search]);
 
     return (
