@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use \App\Http\Controllers\CategoryController;
 
 Route::inertia('/', 'welcome')->name('home');
 
@@ -14,14 +15,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('dashboard');
 
     // Category
-    Route::middleware('permission:view category')
-        ->group(function () {
-            Route::get(
-                '/categories',
-                fn() =>
-                Inertia::render('category/index')
-            )->name('categories.index');
-        });
+    Route::resource('categories', CategoryController::class)->except(['show']);
 
     // Product
     Route::middleware('permission:view product')
