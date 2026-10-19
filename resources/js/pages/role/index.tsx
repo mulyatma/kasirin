@@ -172,7 +172,7 @@ return;
                                         colSpan={4}
                                         className="text-center text-muted-foreground"
                                     >
-                                        Tidak ada role ditemukan.
+                                        No roles found.
                                     </TableCell>
                                 </TableRow>
                             )}
@@ -183,8 +183,8 @@ return;
 
             <DeleteConfirmModal
                 open={!!roleToDelete}
-                title="Hapus Role?"
-                description={`Role "${roleToDelete?.name}" akan dihapus permanen. Tindakan ini tidak dapat dibatalkan.`}
+                title="Delete Role?"
+                description={`Role "${roleToDelete?.name}" will be deleted permanently. This action cannot be undone.`}
                 onConfirm={handleDelete}
                 onCancel={() => setRoleToDelete(null)}
                 processing={deleting}

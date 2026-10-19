@@ -6,7 +6,7 @@ import { ReactNode } from 'react';
 export default function Create({ categories }: { categories: any }) {
     return (
         <>
-            <Head title="Tambah Produk" />
+            <Head title="Add Product" />
             <ProductForm categories={categories} />
         </>
     );

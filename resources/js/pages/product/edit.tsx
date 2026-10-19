@@ -24,7 +24,7 @@ interface Props {
 export default function Edit({ product, categories }: Props) {
     return (
         <>
-            <Head title="Edit Produk" />
+            <Head title="Edit Product" />
             <ProductForm product={product} categories={categories} />
         </>
     );

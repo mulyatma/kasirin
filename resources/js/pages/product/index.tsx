@@ -57,12 +57,12 @@ export default function Index({ products, filters }: any) {
             <Head title="Products" />
             <Card className="m-6">
                 <CardHeader className="flex flex-row items-center justify-between">
-                    <PageHeader title="Produk" description="Kelola produk Anda." />
+                    <PageHeader title="Products" description="Manage your products." />
                     {canCreate && (
                         <Button asChild>
                             <Link href="/products/create">
                                 <Plus className="mr-2 h-4 w-4" />
-                                Tambah Produk
+                                Add Product
                             </Link>
                         </Button>
                     )}
@@ -73,7 +73,7 @@ export default function Index({ products, filters }: any) {
                             <div className="relative max-w-sm">
                                 <Search className="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
                                 <Input
-                                    placeholder="Cari produk..."
+                                    placeholder="Search products..."
                                     className="pl-9"
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
@@ -84,12 +84,12 @@ export default function Index({ products, filters }: any) {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Nama</TableHead>
-                                <TableHead>Deskripsi</TableHead>
-                                <TableHead>Harga</TableHead>
-                                <TableHead>Kategori</TableHead>
-                                <TableHead>Dibuat Pada</TableHead>
-                                {hasActions && <TableHead className="w-[70px]">Aksi</TableHead>}
+                                <TableHead>Name</TableHead>
+                                <TableHead>Description</TableHead>
+                                <TableHead>Price</TableHead>
+                                <TableHead>Category</TableHead>
+                                <TableHead>Created At</TableHead>
+                                {hasActions && <TableHead className="w-[70px]">Action</TableHead>}
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -129,7 +129,7 @@ export default function Index({ products, filters }: any) {
                                                                 }}
                                                             >
                                                                 <Trash2 className="mr-2 h-4 w-4" />
-                                                                Hapus
+                                                                Delete
                                                             </DropdownMenuItem>
                                                         )}
                                                     </DropdownMenuContent>
@@ -141,7 +141,7 @@ export default function Index({ products, filters }: any) {
                             ) : (
                                 <TableRow>
                                     <TableCell colSpan={6} className="text-muted-foreground text-center">
-                                        Tidak ada produk ditemukan.
+                                        No products found.
                                     </TableCell>
                                 </TableRow>
                             )}
@@ -151,8 +151,8 @@ export default function Index({ products, filters }: any) {
             </Card>
             <DeleteConfirmModal
                 open={!!productToDelete}
-                title="Hapus Produk?"
-                description={`Produk "${productToDelete?.name}" akan dihapus secara permanen.`}
+                title="Delete Product?"
+                description={`Product "${productToDelete?.name}" will be deleted permanently.`}
                 onConfirm={handleDelete}
                 onCancel={() => setProductToDelete(null)}
                 processing={deleting}

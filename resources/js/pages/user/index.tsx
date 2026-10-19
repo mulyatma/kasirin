@@ -184,7 +184,7 @@ export default function Index({ users, filters }: Props) {
                                         colSpan={5}
                                         className="text-muted-foreground text-center"
                                     >
-                                        Tidak ada user ditemukan.
+                                        No users found.
                                     </TableCell>
                                 </TableRow>
                             )}
@@ -195,8 +195,8 @@ export default function Index({ users, filters }: Props) {
 
             <DeleteConfirmModal
                 open={!!userToDelete}
-                title="Hapus User?"
-                description={`User "${userToDelete?.name}" akan dihapus permanen. Tindakan ini tidak dapat dibatalkan.`}
+                title="Delete User?"
+                description={`User "${userToDelete?.name}" will be deleted permanently. This action cannot be undone.`}
                 onConfirm={handleDelete}
                 onCancel={() => setUserToDelete(null)}
                 processing={deleting}

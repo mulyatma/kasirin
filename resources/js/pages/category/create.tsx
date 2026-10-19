@@ -6,7 +6,7 @@ import { ReactNode } from 'react';
 export default function Create() {
     return (
         <>
-            <Head title="Tambah Kategori" />
+            <Head title="Add Category" />
             <CategoryForm />
         </>
     );

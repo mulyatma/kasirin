@@ -86,15 +86,15 @@ export default function Index({ categories, filters }: Props) {
             <Card className="m-6">
                 <CardHeader className="flex flex-row items-center justify-between">
                     <PageHeader
-                        title="Kategori Produk"
-                        description="Kelola kategori untuk produk-produk Anda."
+                        title="Product Categories"
+                        description="Manage categories for your products."
                     />
 
                     {canCreate && (
                         <Button asChild>
                             <Link href="/categories/create">
                                 <Plus className="mr-2 h-4 w-4" />
-                                Tambah Kategori
+                                Add Category
                             </Link>
                         </Button>
                     )}
@@ -106,7 +106,7 @@ export default function Index({ categories, filters }: Props) {
                             <div className="relative max-w-sm">
                                 <Search className="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
                                 <Input
-                                    placeholder="Cari kategori..."
+                                    placeholder="Search categories..."
                                     className="pl-9"
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
@@ -118,10 +118,10 @@ export default function Index({ categories, filters }: Props) {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Nama Kategori</TableHead>
-                                <TableHead>Deskripsi</TableHead>
-                                <TableHead>Dibuat Pada</TableHead>
-                                {hasActions && <TableHead className="w-[70px]">Aksi</TableHead>}
+                                <TableHead>Category Name</TableHead>
+                                <TableHead>Description</TableHead>
+                                <TableHead>Created At</TableHead>
+                                {hasActions && <TableHead className="w-[70px]">Action</TableHead>}
                             </TableRow>
                         </TableHeader>
 
@@ -164,7 +164,7 @@ export default function Index({ categories, filters }: Props) {
                                                                 }}
                                                             >
                                                                 <Trash2 className="mr-2 h-4 w-4" />
-                                                                Hapus
+                                                                Delete
                                                             </DropdownMenuItem>
                                                         )}
                                                     </DropdownMenuContent>
@@ -179,7 +179,7 @@ export default function Index({ categories, filters }: Props) {
                                         colSpan={4}
                                         className="text-muted-foreground text-center"
                                     >
-                                        Tidak ada kategori ditemukan.
+                                        No categories found.
                                     </TableCell>
                                 </TableRow>
                             )}
@@ -190,8 +190,8 @@ export default function Index({ categories, filters }: Props) {
 
             <DeleteConfirmModal
                 open={!!categoryToDelete}
-                title="Hapus Kategori?"
-                description={`Kategori "${categoryToDelete?.name}" akan dihapus permanen. Produk yang menggunakan kategori ini mungkin akan terpengaruh.`}
+                title="Delete Category?"
+                description={`Category "${categoryToDelete?.name}" will be deleted permanently. Products using this category might be affected.`}
                 onConfirm={handleDelete}
                 onCancel={() => setCategoryToDelete(null)}
                 processing={deleting}

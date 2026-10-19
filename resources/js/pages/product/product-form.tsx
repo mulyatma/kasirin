@@ -62,13 +62,13 @@ export default function ProductForm({ product, categories }: Props) {
                 <CardHeader className="flex flex-row items-center justify-between">
                     <PageHeader
                         title={product ? 'Edit Product' : 'Create Product'}
-                        description={product ? `Perbarui data produk "${product.name}".` : 'Buat produk baru.'}
+                        description={product ? `Update product data "${product.name}".` : 'Create a new product.'}
                     />
 
                     <Button variant="outline" asChild type="button">
                         <Link href="/products">
                             <ArrowLeft className="mr-2 h-4 w-4" />
-                            Kembali
+                            Back
                         </Link>
                     </Button>
                 </CardHeader>
@@ -76,12 +76,12 @@ export default function ProductForm({ product, categories }: Props) {
                 <CardContent className="space-y-6">
                     <div className="grid max-w-sm gap-4">
                         <div className="grid gap-2">
-                            <Label htmlFor="name">Nama Produk</Label>
+                            <Label htmlFor="name">Product Name</Label>
                             <Input
                                 id="name"
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
-                                placeholder="Contoh: Kopi Arabika"
+                                placeholder="Example: Arabica Coffee"
                                 autoFocus
                             />
                             {errors.name && (
@@ -90,12 +90,12 @@ export default function ProductForm({ product, categories }: Props) {
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="description">Deskripsi</Label>
+                            <Label htmlFor="description">Description</Label>
                             <Textarea
                                 id="description"
                                 value={data.description}
                                 onChange={(e) => setData('description', e.target.value)}
-                                placeholder="Opsional, detail produk…"
+                                placeholder="Optional, product details…"
                             />
                             {errors.description && (
                                 <p className="text-sm text-red-600">{errors.description}</p>
@@ -103,7 +103,7 @@ export default function ProductForm({ product, categories }: Props) {
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="price">Harga</Label>
+                            <Label htmlFor="price">Price</Label>
                             <Input
                                 id="price"
                                 type="number"
@@ -118,13 +118,13 @@ export default function ProductForm({ product, categories }: Props) {
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="category_id">Kategori</Label>
+                            <Label htmlFor="category_id">Category</Label>
                             <Select
                                 value={String(data.category_id)}
                                 onValueChange={(value) => setData('category_id', Number(value))}
                             >
                                 <SelectTrigger id="category_id">
-                                    <SelectValue placeholder="Pilih kategori..." />
+                                    <SelectValue placeholder="Select category..." />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {categories.map((cat) => (
@@ -143,11 +143,11 @@ export default function ProductForm({ product, categories }: Props) {
 
                 <CardFooter className="justify-end gap-2">
                     <Button variant="outline" asChild type="button">
-                        <Link href="/products">Batal</Link>
+                        <Link href="/products">Cancel</Link>
                     </Button>
                     <Button type="submit" disabled={processing}>
                         {processing && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
-                        {product ? 'Simpan Perubahan' : 'Simpan'}
+                        {product ? 'Save Changes' : 'Save'}
                     </Button>
                 </CardFooter>
             </Card>

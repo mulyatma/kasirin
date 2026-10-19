@@ -78,15 +78,15 @@ export default function UserForm({
                         title={user ? 'Edit User' : 'Create User'}
                         description={
                             user
-                                ? `Perbarui profil user "${user.name}" beserta rolenya.`
-                                : 'Buat user baru beserta rolenya.'
+                                ? `Update user profile "${user.name}" and its role.`
+                                : 'Create a new user and assign a role.'
                         }
                     />
 
                     <Button variant="outline" asChild type="button">
                         <Link href="/users">
                             <ArrowLeft className="mr-2 h-4 w-4" />
-                            Kembali
+                            Back
                         </Link>
                     </Button>
                 </CardHeader>
@@ -94,12 +94,12 @@ export default function UserForm({
                 <CardContent className="space-y-6">
                     <div className="grid max-w-sm gap-4">
                         <div className="grid gap-2">
-                            <Label htmlFor="name">Nama Lengkap</Label>
+                            <Label htmlFor="name">Full Name</Label>
                             <Input
                                 id="name"
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
-                                placeholder="Contoh: John Doe"
+                                placeholder="Example: John Doe"
                                 autoFocus
                             />
                             {errors.name && (
@@ -110,13 +110,13 @@ export default function UserForm({
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="email">Alamat Email</Label>
+                            <Label htmlFor="email">Email Address</Label>
                             <Input
                                 id="email"
                                 type="email"
                                 value={data.email}
                                 onChange={(e) => setData('email', e.target.value)}
-                                placeholder="Contoh: john@example.com"
+                                placeholder="Example: john@example.com"
                             />
                             {errors.email && (
                                 <p className="text-sm text-red-600">
@@ -127,14 +127,14 @@ export default function UserForm({
 
                         <div className="grid gap-2">
                             <Label htmlFor="password">
-                                {user ? 'Password Baru (Opsional)' : 'Password'}
+                                {user ? 'New Password (Optional)' : 'Password'}
                             </Label>
                             <Input
                                 id="password"
                                 type="password"
                                 value={data.password}
                                 onChange={(e) => setData('password', e.target.value)}
-                                placeholder={user ? 'Biarkan kosong jika tidak diubah' : 'Minimal 8 karakter'}
+                                placeholder={user ? 'Leave blank if unchanged' : 'Minimum 8 characters'}
                             />
                             {errors.password && (
                                 <p className="text-sm text-red-600">
@@ -144,13 +144,13 @@ export default function UserForm({
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="password_confirmation">Konfirmasi Password</Label>
+                            <Label htmlFor="password_confirmation">Confirm Password</Label>
                             <Input
                                 id="password_confirmation"
                                 type="password"
                                 value={data.password_confirmation}
                                 onChange={(e) => setData('password_confirmation', e.target.value)}
-                                placeholder="Ulangi password"
+                                placeholder="Repeat password"
                             />
                         </div>
                     </div>
@@ -158,11 +158,11 @@ export default function UserForm({
                     <Separator />
 
                     <div className="space-y-4">
-                        <Label className="text-base">Role (Hak Akses)</Label>
+                        <Label className="text-base">Role</Label>
 
                         {roles.length === 0 && (
                             <p className="text-sm text-muted-foreground">
-                                Belum ada role yang tersedia. Buat role terlebih dahulu.
+                                No roles available. Create a role first.
                             </p>
                         )}
                         {errors.role && (
@@ -200,13 +200,13 @@ export default function UserForm({
 
                 <CardFooter className="justify-end gap-2">
                     <Button variant="outline" asChild type="button">
-                        <Link href="/users">Batal</Link>
+                        <Link href="/users">Cancel</Link>
                     </Button>
                     <Button type="submit" disabled={processing || roles.length === 0}>
                         {processing && (
                             <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                         )}
-                        {user ? 'Simpan Perubahan' : 'Simpan'}
+                        {user ? 'Save Changes' : 'Save'}
                     </Button>
                 </CardFooter>
             </Card>

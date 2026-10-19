@@ -47,18 +47,18 @@ export default function CategoryForm({ category }: Props) {
             <Card className="m-6 max-w-2xl">
                 <CardHeader className="flex flex-row items-center justify-between">
                     <PageHeader
-                        title={category ? 'Edit Kategori' : 'Tambah Kategori'}
+                        title={category ? 'Edit Category' : 'Add Category'}
                         description={
                             category
-                                ? `Perbarui informasi kategori "${category.name}".`
-                                : 'Buat kategori baru untuk produk Anda.'
+                                ? `Update category "${category.name}" information.`
+                                : 'Create a new category for your products.'
                         }
                     />
 
                     <Button variant="outline" asChild type="button">
                         <Link href="/categories">
                             <ArrowLeft className="mr-2 h-4 w-4" />
-                            Kembali
+                            Back
                         </Link>
                     </Button>
                 </CardHeader>
@@ -66,12 +66,12 @@ export default function CategoryForm({ category }: Props) {
                 <CardContent className="space-y-6">
                     <div className="grid gap-4">
                         <div className="grid gap-2">
-                            <Label htmlFor="name">Nama Kategori</Label>
+                            <Label htmlFor="name">Category Name</Label>
                             <Input
                                 id="name"
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
-                                placeholder="Contoh: Makanan Berat"
+                                placeholder="Example: Main Course"
                                 autoFocus
                             />
                             {errors.name && (
@@ -82,12 +82,12 @@ export default function CategoryForm({ category }: Props) {
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="description">Deskripsi (Opsional)</Label>
+                            <Label htmlFor="description">Description (Optional)</Label>
                             <Input
                                 id="description"
                                 value={data.description}
                                 onChange={(e) => setData('description', e.target.value)}
-                                placeholder="Keterangan singkat tentang kategori ini..."
+                                placeholder="Brief description about this category..."
                             />
                             {errors.description && (
                                 <p className="text-sm text-red-600">
@@ -100,13 +100,13 @@ export default function CategoryForm({ category }: Props) {
 
                 <CardFooter className="justify-end gap-2">
                     <Button variant="outline" asChild type="button">
-                        <Link href="/categories">Batal</Link>
+                        <Link href="/categories">Cancel</Link>
                     </Button>
                     <Button type="submit" disabled={processing}>
                         {processing && (
                             <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                         )}
-                        {category ? 'Simpan Perubahan' : 'Simpan'}
+                        {category ? 'Save Changes' : 'Save'}
                     </Button>
                 </CardFooter>
             </Card>

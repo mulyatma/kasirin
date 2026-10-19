@@ -91,27 +91,27 @@ export default function RoleForm({
                         title={role ? 'Edit Role' : 'Create Role'}
                         description={
                             role
-                                ? `Perbarui role "${role.name}" beserta hak aksesnya.`
-                                : 'Buat role baru beserta hak aksesnya.'
+                                ? `Update role "${role.name}" and its permissions.`
+                                : 'Create a new role and assign permissions.'
                         }
                     />
 
                     <Button variant="outline" asChild type="button">
                         <Link href="/roles">
                             <ArrowLeft className="mr-2 h-4 w-4" />
-                            Kembali
+                            Back
                         </Link>
                     </Button>
                 </CardHeader>
 
                 <CardContent className="space-y-6">
                     <div className="grid max-w-sm gap-2">
-                        <Label htmlFor="name">Nama Role</Label>
+                        <Label htmlFor="name">Role Name</Label>
                         <Input
                             id="name"
                             value={data.name}
                             onChange={(e) => setData('name', e.target.value)}
-                            placeholder="Contoh: Admin"
+                            placeholder="Example: Admin"
                             autoFocus
                         />
                         {errors.name && (
@@ -128,7 +128,7 @@ export default function RoleForm({
 
                         {Object.keys(permissionGroups).length === 0 && (
                             <p className="text-sm text-muted-foreground">
-                                Belum ada permission yang tersedia.
+                                No permissions available.
                             </p>
                         )}
                         {errors.permissions && (
@@ -209,13 +209,13 @@ export default function RoleForm({
 
                 <CardFooter className="justify-end gap-2">
                     <Button variant="outline" asChild type="button">
-                        <Link href="/roles">Batal</Link>
+                        <Link href="/roles">Cancel</Link>
                     </Button>
                     <Button type="submit" disabled={processing}>
                         {processing && (
                             <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                         )}
-                        {role ? 'Simpan Perubahan' : 'Simpan'}
+                        {role ? 'Save Changes' : 'Save'}
                     </Button>
                 </CardFooter>
             </Card>
