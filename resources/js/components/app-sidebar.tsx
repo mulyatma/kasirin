@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid, Package, Folder, ShoppingCart, Users, Shield, Settings } from 'lucide-react';
+import { BookOpen, FolderGit2, LayoutGrid, Package, Folder, ShoppingCart, Users, Shield, Settings, Plus, History } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -56,6 +56,18 @@ export function AppSidebar() {
             href: '/transactions',
             icon: ShoppingCart,
             permission: 'view transaction',
+            children: [
+                {
+                    title: 'History',
+                    href: '/transactions',
+                    icon: History,
+                },
+                ...(can('create transaction') ? [{
+                    title: 'New Transaction',
+                    href: '/transactions/create',
+                    icon: Plus,
+                }] : []),
+            ],
         },
         {
             title: 'Users',

@@ -8,4 +8,5 @@ export interface NavItem {
     icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
     isActive?: boolean;
     permission?: string;
+    children?: NavItem[];
 }
