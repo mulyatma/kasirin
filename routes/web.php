@@ -48,14 +48,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // Transaction
-    Route::middleware('permission:view transaction')
-        ->group(function () {
-            Route::get(
-                '/transactions',
-                fn() =>
-                Inertia::render('transaction/index')
-            )->name('transactions.index');
-        });
+    Route::middleware('permission:view transaction')->group(function () {
+        Route::get('transactions', [\App\Http\Controllers\TransactionController::class, 'index'])->name('transactions.index');
+        Route::get('transactions/{transaction}', [\App\Http\Controllers\TransactionController::class, 'show'])
+            ->name('transactions.show')
+            ->whereUuid('transaction');
+    });
+    Route::middleware('permission:create transaction')->group(function () {
+        Route::get('transactions/create', [\App\Http\Controllers\TransactionController::class, 'create'])->name('transactions.create');
+        Route::post('transactions', [\App\Http\Controllers\TransactionController::class, 'store'])->name('transactions.store');
+    });
 
     // User Management
     Route::middleware('permission:view user')->group(function () {

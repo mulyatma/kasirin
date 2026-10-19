@@ -59,24 +59,29 @@ class TransactionController extends Controller
                 ];
             }
 
+            $cashAmount = null;
+            $changeAmount = null;
+
+            if ($validated['payment_method'] === 'cash') {
+                $cashAmount = (float) ($validated['cash_amount'] ?? $totalAmount);
+                $changeAmount = max(0, $cashAmount - $totalAmount);
+            }
+
             // Create Transaction
             $transaction = Transaction::create([
                 'invoice_number' => $invoiceNumber,
                 'customer_name' => $validated['customer_name'] ?? null,
                 'total_amount' => $totalAmount,
+                'cash_amount' => $cashAmount,
+                'change_amount' => $changeAmount,
                 'payment_method' => $validated['payment_method'],
-                'payment_status' => 'pending', // By default pending, could be 'paid' if 'cash'
+                'payment_status' => $validated['payment_method'] === 'cash' ? 'paid' : 'pending',
                 'cashier_id' => auth()->id(),
             ]);
 
             // Create Transaction Items
             foreach ($itemsData as $itemData) {
                 $transaction->items()->create($itemData);
-            }
-
-            // If payment method is cash, we can automatically mark as paid
-            if ($validated['payment_method'] === 'cash') {
-                $transaction->update(['payment_status' => 'paid']);
             }
 
             // Later: Trigger Xendit API here if payment_method is qris or bank_transfer
