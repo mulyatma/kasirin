@@ -1,7 +1,9 @@
-import { Head, Link } from '@inertiajs/react';
+import { useState, type ReactNode } from 'react';
+import { Head, Link, router } from '@inertiajs/react';
+import AppLayout from '@/layouts/app-layout';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Printer } from 'lucide-react';
+import { ArrowLeft, Printer, ExternalLink, RefreshCw, CheckCircle2, Clock } from 'lucide-react';
 
 interface Transaction {
     id: string;
@@ -12,6 +14,8 @@ interface Transaction {
     change_amount?: string | null;
     payment_method: string;
     payment_status: string;
+    xendit_invoice_id?: string | null;
+    xendit_payment_url?: string | null;
     created_at: string;
     cashier: { name: string };
     items: Array<{
@@ -26,6 +30,15 @@ interface Transaction {
 export default function Show({ transaction }: { transaction: Transaction }) {
     const isXenditMethod = ['qris', 'bank_transfer'].includes(transaction.payment_method);
     const isPending = transaction.payment_status === 'pending';
+    const [checking, setChecking] = useState(false);
+
+    const handleCheckStatus = () => {
+        setChecking(true);
+        router.post(`/transactions/${transaction.id}/check-status`, {}, {
+            preserveScroll: true,
+            onFinish: () => setChecking(false),
+        });
+    };
 
     return (
         <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
@@ -111,20 +124,57 @@ export default function Show({ transaction }: { transaction: Transaction }) {
                         )}
                         <div className="flex justify-between text-muted-foreground">
                             <span>Status</span>
-                            <span className="uppercase font-semibold text-foreground">{transaction.payment_status}</span>
+                            <span className={`uppercase font-semibold ${
+                                transaction.payment_status === 'paid' ? 'text-green-600' :
+                                transaction.payment_status === 'pending' ? 'text-amber-600' :
+                                'text-destructive'
+                            }`}>
+                                {transaction.payment_status}
+                            </span>
                         </div>
                     </div>
 
-                    {/* Xendit Integration Notice */}
-                    {isXenditMethod && isPending && (
-                        <div className="bg-blue-50 text-blue-800 p-4 rounded-md text-center flex flex-col gap-2 mt-2 print:hidden">
-                            <p className="font-medium">Waiting for Payment</p>
-                            <p className="text-xs">
-                                In the future, a Xendit payment link or QR code will appear here.
-                            </p>
-                            <Button className="mt-2" variant="secondary" size="sm">
-                                Simulate Payment (Soon)
-                            </Button>
+                    {/* Xendit Integration Block */}
+                    {isXenditMethod && (
+                        <div className="mt-2 print:hidden">
+                            {isPending ? (
+                                <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 text-amber-900 dark:text-amber-200 p-4 rounded-lg flex flex-col gap-3 text-center">
+                                    <div className="flex items-center justify-center gap-2 font-semibold text-sm">
+                                        <Clock className="h-4 w-4 text-amber-600 animate-pulse" />
+                                        <span>Menunggu Pembayaran Xendit</span>
+                                    </div>
+                                    <p className="text-xs text-muted-foreground">
+                                        Selesaikan pembayaran melalui tautan invoice Xendit berikut atau scan QRIS.
+                                    </p>
+                                    <div className="flex flex-col gap-2 pt-1">
+                                        {transaction.xendit_payment_url && (
+                                            <Button asChild className="w-full">
+                                                <a href={transaction.xendit_payment_url} target="_blank" rel="noopener noreferrer">
+                                                    <ExternalLink className="mr-2 h-4 w-4" /> Buka Pembayaran Xendit
+                                                </a>
+                                            </Button>
+                                        )}
+                                        <Button 
+                                            variant="outline" 
+                                            size="sm" 
+                                            onClick={handleCheckStatus} 
+                                            disabled={checking}
+                                        >
+                                            <RefreshCw className={`mr-2 h-4 w-4 ${checking ? 'animate-spin' : ''}`} />
+                                            {checking ? 'Memeriksa...' : 'Cek Status Pembayaran'}
+                                        </Button>
+                                    </div>
+                                </div>
+                            ) : transaction.payment_status === 'paid' ? (
+                                <div className="bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 text-green-900 dark:text-green-200 p-3 rounded-lg flex items-center justify-center gap-2 text-sm font-medium">
+                                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                                    <span>Pembayaran Xendit Berhasil Dikonfirmasi</span>
+                                </div>
+                            ) : (
+                                <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 text-red-900 dark:text-red-200 p-3 rounded-lg text-center text-xs">
+                                    <span>Pembayaran Xendit gagal atau kadaluarsa.</span>
+                                </div>
+                            )}
                         </div>
                     )}
                 </CardContent>
@@ -137,3 +187,13 @@ export default function Show({ transaction }: { transaction: Transaction }) {
     );
 }
 
+Show.layout = (page: ReactNode) => (
+    <AppLayout
+        breadcrumbs={[
+            { title: 'Transactions', href: '/transactions' },
+            { title: 'Invoice', href: '#' },
+        ]}
+    >
+        {page}
+    </AppLayout>
+);

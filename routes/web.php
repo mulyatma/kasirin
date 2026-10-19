@@ -53,6 +53,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('transactions/{transaction}', [\App\Http\Controllers\TransactionController::class, 'show'])
             ->name('transactions.show')
             ->whereUuid('transaction');
+        Route::post('transactions/{transaction}/check-status', [\App\Http\Controllers\TransactionController::class, 'checkStatus'])
+            ->name('transactions.check-status')
+            ->whereUuid('transaction');
     });
     Route::middleware('permission:create transaction')->group(function () {
         Route::get('transactions/create', [\App\Http\Controllers\TransactionController::class, 'create'])->name('transactions.create');
@@ -91,5 +94,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
     });
 });
+
+// Public Webhooks
+Route::post('webhooks/xendit', [\App\Http\Controllers\TransactionController::class, 'webhook'])->name('xendit.webhook');
 
 require __DIR__ . '/settings.php';
