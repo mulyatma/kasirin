@@ -141,3 +141,34 @@
         @apply bg-background text-foreground;
     }
 }
+
+@media print {
+  /* Menghilangkan header & footer bawaan browser (URL, Tanggal, dll) */
+  @page {
+    margin: 0; 
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #printable-receipt, 
+  #printable-receipt * {
+    visibility: visible;
+  }
+
+  /* Posisikan di pojok kiri atas, tapi beri sedikit padding 
+     agar teks tidak terpotong tepi kertas karena marginnya 0 */
+  #printable-receipt {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 1cm; /* Sesuaikan angka ini dengan lebar kertas thermal Anda (misal: 0.5cm) */
+  }
+
+  .print\:hidden,
+  .print\:hidden * {
+    display: none !important;
+  }
+}

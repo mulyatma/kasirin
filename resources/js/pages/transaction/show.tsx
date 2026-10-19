@@ -45,17 +45,15 @@ export default function Show({ transaction }: { transaction: Transaction }) {
             <Head title={`Transaction ${transaction.invoice_number}`} />
 
             <div className="w-full max-w-md flex justify-between mb-4 print:hidden">
-                <Button variant="ghost" asChild>
-                    <Link href="/transactions">
-                        <ArrowLeft className="mr-2 h-4 w-4" /> Back to History
-                    </Link>
+                <Button variant="ghost" onClick={() => window.history.back()}>
+                    <ArrowLeft className="mr-2 h-4 w-4" /> Back
                 </Button>
                 <Button variant="outline" onClick={() => window.print()}>
                     <Printer className="mr-2 h-4 w-4" /> Print Receipt
                 </Button>
             </div>
 
-            <Card className="w-full max-w-md print:shadow-none print:border-none print:w-full">
+            <Card id="printable-receipt" className="w-full max-w-md print:shadow-none print:border-none print:w-full">
                 <CardHeader className="text-center pb-2">
                     <CardTitle className="text-2xl font-bold">KASIRIN</CardTitle>
                     <p className="text-sm text-muted-foreground">Point of Sale System</p>
@@ -124,11 +122,10 @@ export default function Show({ transaction }: { transaction: Transaction }) {
                         )}
                         <div className="flex justify-between text-muted-foreground">
                             <span>Status</span>
-                            <span className={`uppercase font-semibold ${
-                                transaction.payment_status === 'paid' ? 'text-green-600' :
+                            <span className={`uppercase font-semibold ${transaction.payment_status === 'paid' ? 'text-green-600' :
                                 transaction.payment_status === 'pending' ? 'text-amber-600' :
-                                'text-destructive'
-                            }`}>
+                                    'text-destructive'
+                                }`}>
                                 {transaction.payment_status}
                             </span>
                         </div>
@@ -154,10 +151,10 @@ export default function Show({ transaction }: { transaction: Transaction }) {
                                                 </a>
                                             </Button>
                                         )}
-                                        <Button 
-                                            variant="outline" 
-                                            size="sm" 
-                                            onClick={handleCheckStatus} 
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={handleCheckStatus}
                                             disabled={checking}
                                         >
                                             <RefreshCw className={`mr-2 h-4 w-4 ${checking ? 'animate-spin' : ''}`} />

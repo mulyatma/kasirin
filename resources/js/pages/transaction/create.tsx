@@ -232,7 +232,7 @@ export default function Create({ products }: { products: Product[] }) {
                                                     Uang Pas
                                                 </Button>
                                                 {[20000, 50000, 100000].map(amt => (
-                                                    amt >= total && (
+                                                    amt > total && (
                                                         <Button
                                                             key={amt}
                                                             type="button"
